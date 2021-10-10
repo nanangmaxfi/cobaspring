@@ -1,5 +1,7 @@
 package com.nanangmaxfi.cobaspring.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nanangmaxfi.cobaspring.dto.ResponseData;
+import com.nanangmaxfi.cobaspring.dto.SearchData;
 import com.nanangmaxfi.cobaspring.models.entities.Product;
 import com.nanangmaxfi.cobaspring.models.entities.Supplier;
 import com.nanangmaxfi.cobaspring.services.ProductService;
@@ -80,5 +83,25 @@ public class ProductController {
 	@PostMapping("/{id}")
 	public void addSupplier(@RequestBody Supplier supplier, @PathVariable("id") Long productId) {
 		productService.addSupplier(supplier, productId);
+	}
+	
+	@PostMapping("/search/name")
+	public Product getProductByName(@RequestBody SearchData searchData) {
+		return productService.findByProductName(searchData.getSearchKey());
+	}
+	
+	@PostMapping("/search/namelike")
+	public List<Product> getProductByNameLike(@RequestBody SearchData searchData) {
+		return productService.findByProductNameLike(searchData.getSearchKey());
+	}
+	
+	@GetMapping("/search/category/{categoryId}")
+	public List<Product> getProductByCategory(@PathVariable("categoryId") Long categoryId){
+		return productService.findByCategory(categoryId);
+	}
+	
+	@GetMapping("/search/supplier/{supplierId}")
+	public List<Product> getProductBySupplier(@PathVariable("supplierId") Long supplierId){
+		return productService.findBySupplier(supplierId);
 	}
 }
