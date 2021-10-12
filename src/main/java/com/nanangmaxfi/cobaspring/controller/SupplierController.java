@@ -1,5 +1,7 @@
 package com.nanangmaxfi.cobaspring.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nanangmaxfi.cobaspring.dto.ResponseData;
+import com.nanangmaxfi.cobaspring.dto.SearchData;
 import com.nanangmaxfi.cobaspring.dto.SupplierData;
 import com.nanangmaxfi.cobaspring.models.entities.Supplier;
 import com.nanangmaxfi.cobaspring.services.SupplierService;
@@ -77,5 +80,20 @@ public class SupplierController {
 		responseData.setStatus(true);
 		responseData.setPayload(supplierService.save(supplier));
 		return ResponseEntity.ok(responseData);
+	}
+	
+	@PostMapping("/search/byemail")
+	public Supplier findByEmail(@RequestBody SearchData searchData) {
+		return supplierService.findByEmail(searchData.getSearchKey());
+	}
+	
+	@PostMapping("/search/byname")
+	public List<Supplier> findByName(@RequestBody SearchData searchData){
+		return supplierService.findByName(searchData.getSearchKey());
+	}
+	
+	@PostMapping("/search/namestartwith")
+	public List<Supplier> findByNameStartWith(@RequestBody SearchData searchData){
+		return supplierService.findByNameStartWith(searchData.getSearchKey());
 	}
 }
